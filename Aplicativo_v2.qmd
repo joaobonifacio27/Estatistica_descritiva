@@ -1,0 +1,190 @@
+---
+title: "Estatística Descritiva"
+format: 
+  dashboard:
+    nav-buttons:
+      - icon: github
+        href: https://github.com
+      - icon: twitter
+        href: https://x.com/home
+server: shiny
+theme: Lumen
+embad-resources: true
+---
+
+```{r}
+#| label: setup
+#| context: server
+
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(plotly)
+library(readr)
+library(tidyverse)
+```
+
+# {.sidebar data-width=350}
+
+#### Importe a base de dados a ser analisada
+ 
+```{r}
+#| label: input
+
+fileInput("arquivo", "Carregar Arquivo",
+                accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv"))
+
+uiOutput("column_selector")
+```
+
+::: {.callout-note collapse="true"}
+## Tutorial
+1 - Clique no botão "Browse" para carregar a base de dados que deseja analisar.
+
+2 - Selecione o arquivo e clique em "Abrir".
+
+3 - Selecione a coluna que deseja analisar.
+:::
+
+# Variaveis Numéricas
+
+##  {height="20%"} 
+
+::: {.valuebox }
+`r valueBoxOutput('media')`
+:::
+
+::: {.valuebox }
+`r valueBoxOutput('moda')`
+:::
+
+::: {.valuebox }
+`r valueBoxOutput('mediana')`
+:::
+
+## colunm {height="80%"}
+
+```{r}
+#| label: Histograma
+plotlyOutput({'histograma'})
+```
+
+# Variaveis Não Numéricas
+
+```{r}
+#| label: Gráfico de Barras
+plotlyOutput({'barras'})
+```
+
+# Base de dados
+
+```{r}
+#| label: Tabela
+tableOutput('tabela')
+```
+
+```{r}
+#| label: Visualização dos dados
+#| context: server
+
+data <- reactive({
+    req(input$arquivo)
+    df <- read_delim(input$arquivo$datapath)
+    return(df)})
+
+output$data <- renderUI({
+    tableOutput("data")
+})
+
+# Atualiza o seletor de colunas quando um arquivo é carregado
+output$column_selector <- renderUI({
+    req(data())
+    selectInput("column", "Selecione a Coluna para Análise:",
+                choices = names(data()))
+  })
+
+```
+
+```{r}
+#| context: server
+#| label: Medidas de Dispersão
+
+output$histograma<- renderPlotly({
+    req(data())
+    req(input$column)
+    
+    valores <- data()[[input$column]]
+    
+    # Verifica se a coluna é numérica
+    if (!is.numeric(valores)) {
+      showNotification("Por favor, selecione uma coluna numérica.", type = "error")
+      return()
+    }
+   ggplot(data(), aes(x = valores)) +
+    geom_density(fill = "skyblue", alpha = 0.5) +
+    geom_vline(aes(xintercept = mean(valores, na.rm = TRUE)), color = "skyblue3", linetype = "dashed", size = 1) +
+    geom_vline(aes(xintercept = median(valores, na.rm = TRUE)), color = "skyblue4", linetype = "dashed", size = 1) +
+    labs(title = "Histograma", x = "Valores", y = "Frequência") +
+    theme_minimal()
+  })
+# Média
+output$media <- renderValueBox({
+    req(data())
+    req(input$column)
+    valores <- data()[[input$column]]
+    media <- mean(valores, na.rm = TRUE)
+    valueBox(value = round(media, 2), subtitle = "Média")
+  })
+# Moda
+output$moda <- renderValueBox({
+    req(data())
+    req(input$column)
+    valores <- data()[[input$column]]
+    moda <- as.numeric(names(sort(table(valores), decreasing = TRUE)[1]))
+    valueBox(value = moda, subtitle = "Moda")
+  })
+# Mediana
+output$mediana <- renderValueBox({
+    req(data())
+    req(input$column)
+    valores <- data()[[input$column]]
+    mediana <- median(valores, na.rm = TRUE)
+    valueBox(value = mediana, subtitle = "Mediana")
+  })
+
+```
+
+```{r}
+#| context: server
+
+# Grafico de barras para variaveis não numéricas
+output$barras <-  renderPlotly({
+    req(data())
+    req(input$column)
+    
+    valores <- data()[[input$column]]
+    
+    # Verifica se a coluna é numérica
+    if (is.numeric(valores)) {
+      showNotification("Por favor, selecione uma coluna não numérica.", type = "error")
+      return()
+    }
+    
+    ggplot(data(), aes(x = valores)) +
+      # Grafico de barras do maior para o menor com cores diferentes
+      geom_bar(aes(fill = valores), position = "dodge") +
+      labs(title = "Gráfico de Barras", x = "Valores", y = "Frequência") +
+      theme_minimal()
+
+})
+```
+
+```{r}
+#| context: server
+output$tabela <- renderTable({
+    req(data())
+    data()
+  })
+```
+
+

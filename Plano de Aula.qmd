@@ -1,0 +1,82 @@
+---
+title: "Plano de Aula"
+author: "João Paulo Bonifácio"
+format: html
+toc: true
+embad-resources: TRUE
+theme: Lumen
+---
+
+## Publico Alvo
+
+1° ano do Ensino médio
+
+## Tema
+
+Distribuição de frequência e medidas de tendência central.
+
+## Competência Específica
+
+::: {style = "text-align:justify"}
+Propor ou participar de ações para investigar desafios do mundo contemporâneo e tomar decisões éticas e socialmente responsáveis, com base na análise de problemas sociais, como os voltados a situações de saúde, sustentabilidade, das implicações da tecnologia no mundo do trabalho, entre outros, mobilizando e articulando conceitos, procedimentos e linguagens próprios da Matemática.
+:::
+
+## Habilidades
+
+::: {style="text-align:justify"}
+**(EM13MAT202)** Planejar e executar pesquisa amostral sobre questões relevantes, usando dados coletados diretamente ou em diferentes fontes, e comunicar os resultados por meio de relatório contendo gráficos e interpretação das medidas de tendência central e das medidas de dispersão (amplitude e desvio padrão), utilizando ou não recursos tecnológicos.
+:::
+
+## Objetivos
+
+::: {style="text-align: justify"}
+-   Compreender a importância da estatística descritiva para a análise de dados.
+-   Analisar e interpretar medidas de tendencia central.
+-   Intepretar graficos de densidade de distribuição e de frequência.
+:::
+
+## Duração
+
+3 aulas de 50 minutos.
+
+## Recursos
+
+-   Quadro branco.
+-   Laboratório de informática.
+-   Planilha eletrônica (.csv)
+-   [Aplicativo_v1.qmd](Aplicativo_v1.qmd)
+
+## Metodologia
+
+### Aula 1 - Apresentação do conteúdo
+
+::: {style="text-align: justify"}
+Em um primeiro momento será apresentado o conceito de medidas de tendencia central de uma amostra de dados. Será apresentado o conceito de média, mediana e moda. Será apresentado exemplos de como calcular essas medidas e como interpretar os resultados.
+:::
+
+### Aula 2 - Coleta dos dados
+
+::: {style="text-align: justify"}
+Os alunos serão divididos em grupos e cada grupo deverá coletar dados de uma amostra de pelo menos 30 pessoas. Os dados a serem coletados vão ser de escolhas do aluno, mas o professor deverá orientar para que a coleta contenha dados numéricos e não numéricos de fator. Idade, sexo, peso, autura e preferencias de esporte e de música são alguns exemplos de dados que podem ser coletados. Os dados coletados deverão ser tabulados e organizados em uma planilha.
+:::
+
+### Aula 3 - Análise dos dados
+
+::: {style="text-align: justify"}
+Usando o palicativo em Shiny, os alunos deverão carregar a planilha com os dados coletados e analisar as medidas de tendencia central. Os alunos deverão apresentar os resultados obtidos e discutir sobre os gráficos gerados. O Professor deverá orientar os alunos a interpretar os resultados obtidos e auxiliar na interpretação dos gráfico. Ao mediar as discussões, o professor poderar fazer os seguintes questionamentos:
+
+-   O que o formato do gráfico de densidade nos diz sobre a distribuição dos dados?
+-   Qual a relação da média e da mediana com o gráfico de densidade?
+-   O que o gráfico de barra nos diz?
+-   Qual a importância de se calcular as medidas de tendencia central?
+:::
+
+## Avaliação
+
+::: {style="text-align: justify"}
+A avaliação será feita através da participação na coleta dos dados, e na discussão dos resultados obtidos.
+:::
+
+## Referências
+
+-   [Aplicativo_v1.R](Aplicativo_v1.qmd)
